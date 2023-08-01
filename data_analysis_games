@@ -1,0 +1,26 @@
+#анализ датасета по продажам компьютерных игр. 
+import pandas as pd
+
+# загружаем датасет
+df = pd.read_csv('vgsales.csv')  # ваш код здесь
+
+# просмотр первых 5 строчек датасета.
+print('first 5 rows\n', df.head(), end='\n')
+
+# 1. считаем количество уникальных игр в датасете, не включая NuN
+print('count uniq names\n', df['Name'].nunique(), end='\n')
+
+# 2. подсчет общей величина продаж игр в Японии
+print('sum Japan sales\n', df['JP_Sales'].sum(), end='\n')
+
+# 3. ищем три самых популярных жанра игр в Северной Америке по количеству продаж
+a = df.groupby('Genre')['NA_Sales'].sum().sort_values(ascending=False)
+print('three most popular genres in NA by sum sales\n', a.head(3), end='\n')
+
+# 4. поиск самой популярной платформы (по количеству выпущенных игр) в 2000 году.
+d = df[df.Year == 2000]
+print('most popular platform in 2000 year\n', d['Platform'].value_counts().head(1), end='\n')
+
+# 5. поиск издателя, выпустившего больше всего игр в период 2012-2015 (оба конца включительно)
+q5 = df[(df['Year'] >= 2012) & (df['Year'] <= 2015)]
+print('the most successful publisher in 2012-2015\n', q5['Publisher'].value_counts().head(1))
